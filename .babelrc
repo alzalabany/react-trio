@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false,
+      "node": "current"
+    }],
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "transform-runtime"
+  ]
+}
