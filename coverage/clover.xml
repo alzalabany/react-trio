@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1538652622796" clover="3.2.0">
+  <project timestamp="1538652622796" name="All files">
+    <metrics statements="101" coveredstatements="37" conditionals="83" coveredconditionals="29" methods="35" coveredmethods="12" elements="219" coveredelements="78" complexity="0" loc="101" ncloc="101" packages="1" files="2" classes="2">
+      <file name="index.js" path="/Users/momen/Desktop/workspace/libraries/react-trio/src/index.js">
+        <metrics statements="58" coveredstatements="0" conditionals="46" coveredconditionals="0" methods="21" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="3" count="0" type="cond" truecount="0" falsecount="12"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="55" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="69" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="72" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="75" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="83" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="89" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="106" count="0" type="cond" truecount="0" falsecount="8"/>
+        <line num="116" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="118" count="0" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="135" count="0" type="stmt"/>
+        <line num="143" count="0" type="stmt"/>
+        <line num="147" count="0" type="stmt"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="149" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="153" count="0" type="stmt"/>
+        <line num="156" count="0" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
+        <line num="171" count="0" type="stmt"/>
+        <line num="172" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="174" count="0" type="stmt"/>
+      </file>
+      <file name="utils.js" path="/Users/momen/Desktop/workspace/libraries/react-trio/src/utils.js">
+        <metrics statements="43" coveredstatements="37" conditionals="37" coveredconditionals="29" methods="14" coveredmethods="12"/>
+        <line num="2" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="4" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="12" count="7" type="stmt"/>
+        <line num="13" count="7" type="cond" truecount="0" falsecount="1"/>
+        <line num="14" count="6" type="stmt"/>
+        <line num="15" count="6" type="stmt"/>
+        <line num="16" count="6" type="cond" truecount="3" falsecount="1"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="24" count="6" type="stmt"/>
+        <line num="26" count="14" type="stmt"/>
+        <line num="27" count="14" type="stmt"/>
+        <line num="28" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="14" type="stmt"/>
+        <line num="31" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="10" type="stmt"/>
+        <line num="40" count="14" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="46" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="49" count="14" type="stmt"/>
+        <line num="50" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="4" type="stmt"/>
+        <line num="60" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="61" count="4" type="stmt"/>
+        <line num="64" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="3" type="stmt"/>
+        <line num="68" count="4" type="stmt"/>
+        <line num="69" count="8" type="stmt"/>
+        <line num="72" count="4" type="stmt"/>
+        <line num="74" count="4" type="stmt"/>
+        <line num="75" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="4" type="stmt"/>
+        <line num="81" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="82" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="86" count="4" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+      </file>
+    </metrics>
+  </project>
+</coverage>

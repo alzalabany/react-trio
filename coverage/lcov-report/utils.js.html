@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for utils.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="prettify.css" />
+    <link rel="stylesheet" href="base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="index.html">All files</a> utils.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.67% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>41/49</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.38% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>29/37</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.71% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>12/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">86.05% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>37/43</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export function subscribe(name, fn, eventStore) {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (Array.isArray(name)) <span class="cstat-no" title="statement not covered" >return name.map(<span class="fstat-no" title="function not covered" >n </span>=&gt; <span class="cstat-no" title="statement not covered" >subscribe(n, fn, eventStore))</span>;</span>
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!eventStore[name]) eventStore[name] = [];
+  // mutate eventStore
+  const idx = eventStore[name].push(fn) - 1;
+  return () =&gt; eventStore[name].splice(idx, 1);
+}
+export function combineReducers(reducers) {
+  const reducerKeys = Object.keys(reducers);
+&nbsp;
+  const emptyState = {};
+  return function combination(state = <span class="branch-0 cbranch-no" title="branch not covered" >emptyState,</span> action) {
+    let hasChanged = false;
+    const nextState = {};
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!action || typeof action.type !== "string") {
+<span class="cstat-no" title="statement not covered" >      console.error(</span>
+        "All actions must contain a type attribute, eg: { type: String, ... }, we will ignore your action",
+        action,
+        state
+      );
+<span class="cstat-no" title="statement not covered" >      return state;</span>
+    }
+    reducerKeys.forEach(key =&gt; {
+      let nextStateForKey;
+      const reducer = reducers[key];
+      const previousStateForKey = state[key];
+      const initialState = reducer.initialState || null;
+      const scope = reducer.eventName;
+&nbsp;
+      if (
+        action.type === "/trio/@@init/" ||
+        (scope &amp;&amp; scope !== "*" &amp;&amp; scope.indexOf(action.type) === -1)
+      ) {
+        nextStateForKey = previousStateForKey || initialState;
+      } else {
+        nextStateForKey = reducer(previousStateForKey, action, state);
+      }
+&nbsp;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof nextStateForKey === "undefined") {
+<span class="cstat-no" title="statement not covered" >        console.error(</span>
+          "reducer named " +
+            key +
+            " returned undefined, you must return something !\n we will just ignore your action for this key and return previous/initial state for key..."
+        );
+<span class="cstat-no" title="statement not covered" >        nextStateForKey = previousStateForKey || initialState;</span>
+      }
+&nbsp;
+      nextState[key] = nextStateForKey;
+      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+    });
+&nbsp;
+    return hasChanged ? nextState : state;
+  };
+}
+&nbsp;
+export async function emit(event, data) {
+  let actionCreators = [];
+&nbsp;
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (Array.isArray(this.emitter["*"])) {
+    actionCreators = this.emitter["*"];
+  }
+&nbsp;
+  if (Array.isArray(this.emitter[event])) {
+    actionCreators = actionCreators.concat(this.emitter[event]);
+  }
+&nbsp;
+  let promises = actionCreators.map(
+    async fn =&gt; await fn(event, data, this.emit, this.getState)
+  );
+  var actions;
+  return Promise.all(promises)
+    .then(result =&gt; {
+      actions = result;
+      return result.filter(r =&gt; r &amp;&amp; typeof r.type === "string");
+    })
+    .then(actions =&gt;
+      actions.reduce((state, action) =&gt; this.reducer(state, action), this.state)
+    )
+    .then(newState =&gt; {
+      const willChange = newState ? newState !== this.state : false;
+      if (willChange) {
+        this.setState(newState);
+      }
+&nbsp;
+      return {
+        ok: true,
+        actions,
+        willChange,
+        state: newState
+      };
+    })
+    .catch(<span class="fstat-no" title="function not covered" >e </span>=&gt; {
+<span class="cstat-no" title="statement not covered" >      console.error(</span>
+        "something bad happened while executing event:" + event,
+        data,
+        e
+      );
+<span class="cstat-no" title="statement not covered" >      return {</span>
+        ok: false,
+        actions,
+        willChange: false,
+        state: this.state
+      };
+    });
+}
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Oct 04 2018 13:30:22 GMT+0200 (Eastern European Standard Time)
+</div>
+</div>
+<script src="prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="sorter.js"></script>
+</body>
+</html>

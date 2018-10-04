@@ -2763,9 +2763,9 @@ function subscribe(name, fn, eventStore) {
     return eventStore[name].splice(idx, 1);
   };
 }
-function combineReducers(reducers, debug) {
+function combineReducers(reducers) {
   var reducerKeys = _Object$keys(reducers);
-  console.log('Combining ', reducerKeys);
+
   var emptyState = {};
   return function combination() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : emptyState;
@@ -2781,40 +2781,24 @@ function combineReducers(reducers, debug) {
       var nextStateForKey = void 0;
       var reducer = reducers[key];
       var previousStateForKey = state[key];
-      var initalState = reducer.initalState || null;
+      var initialState = reducer.initialState || null;
       var scope = reducer.eventName;
-      console.log('running ' + action.type + ' on ' + key + " @", scope);
-      if (action.type === "/simpleflux/@@init/" || scope && scope.indexOf(action.type) === -1) {
-        console.log('@@skip', scope.indexOf(action.type));
-        nextStateForKey = previousStateForKey || initalState;
+
+      if (action.type === "/trio/@@init/" || scope && scope !== "*" && scope.indexOf(action.type) === -1) {
+        nextStateForKey = previousStateForKey || initialState;
       } else {
         nextStateForKey = reducer(previousStateForKey, action, state);
-        console.log('@@next =', nextStateForKey);
       }
 
       if (typeof nextStateForKey === "undefined") {
-        console.error("reducer named " + key + " returned undefined, you must return something !, we will just ignore your action for this key...");
-        nextStateForKey = previousStateForKey;
+        console.error("reducer named " + key + " returned undefined, you must return something !\n we will just ignore your action for this key and return previous/initial state for key...");
+        nextStateForKey = previousStateForKey || initialState;
       }
 
       nextState[key] = nextStateForKey;
-
-      if (debug) {
-        if (nextStateForKey === previousStateForKey) {
-          console.log("Action of type " + action.type + " didNOT change your key:" + key, nextStateForKey);
-        } else {
-          console.log("Action of type " + action.type + " changed your key:" + key);
-          console.log("from", previousStateForKey);
-          console.log("to", nextStateForKey);
-        }
-      }
       hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
     });
-    if (debug && hasChanged) {
-      console.log("your state will change");
-      console.log("from", state);
-      console.log("to", nextState);
-    }
+
     return hasChanged ? nextState : state;
   };
 }
@@ -2976,7 +2960,7 @@ var ReactTrio = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var emit = this.emit,
+      var emit$$1 = this.emit,
           listen = this.listen;
 
       return createElement(
@@ -2984,7 +2968,7 @@ var ReactTrio = function (_React$Component) {
         {
           value: {
             store: this.state,
-            emit: emit,
+            emit: emit$$1,
             listen: listen,
             selectors: this.props.selectors // just a proxy to avoid import X form '../../../sdk/MODULE/selectors' shit..
           }
