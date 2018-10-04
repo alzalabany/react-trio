@@ -1,4 +1,3 @@
 
 export const leaf = 'counter';
-export const ADD = '/COUNTER/ADD/';
-export const SUBTRACT = '/COUNTER/SUBTRACT/';
+export const ONLOAD = '/COUNTER/ONLOAD/';

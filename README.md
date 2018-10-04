@@ -1,24 +1,126 @@
 # React-Trio
 
->
-
 [![NPM](https://img.shields.io/npm/v/react-trio.svg)](https://www.npmjs.com/package/react-trio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+A Simple yet Powerfull -200<line of code- Facebook Flux pattern implementation, inspired by Redux & new context api.
+
+it use React's 16.3 new Contect Api mixed with Event Subscription,to focus on separation of concerns while building modern complex react applications !
+
+> build your UI in complete separate from Business logic, a Structure that encourage spliting your app into multiple packages for max. code sharing and pleasent Developement Experince
 
 ## Install
 
 ```bash
-npm install --save react-trio
+npm install --save react-trio;
 ```
 
-a simple -200<line of code- Facebook Flux pattern implementation, inspired by Redux & new context api.
+or
 
-it use React's 16.3 new Contect Api mixed with Event Subscription,to focus on separation of concerns while building modern complex react applications !
+```bash
+yarn add react-trio;
+```
 
-> build your UI completely based on events you emit, and responde to em in your action, very neat.
+then add this script to your `package.json` to be able to generate Modules from command cli;
+
+```json
+  "scripts": {
+    ....
+    "trio":"trio dir=./src/sdk "
+    ...
+  }
+```
+
+Now to create our first module run
+
+```bash
+yarn trio counter users
+```
+
+this will create following folder structures
+
+```js
+|
+|--src
+|----sdk
+|------Counter
+|-------- types.js
+|-------- selectors.js
+|-------- reducer.js
+|-------- actions.js
+|-------- index.js
+|-------- index.spec.js
+|------Users
+|-------- ... as Counter
+|------index.js
+|------index.spec.js
+|--package.json
+```
+
+> you dont need all above, this is just a helper small gen. i find easier to create boilerplate.
+
+
+- To Start you need to run your App with `<Provider />` from `react-trio`
+- import { rootreducer, actions, selectors } from generated sdk folder and inject them as props into Provider
+
+** Thats all setup is done **
+
+### Connecting Components
+
+> any logic code that does not depends on Enviroment, try to move it inside SDK folder
+
+** this will help you in future to move sdk folder to external package and reuse most amount of code as possible, along with keeping consistent API/SDK for your applications **
+
+#### Rules
+
+- All components listen for specfic Events, and only work for them.. or listen for '*' too everything, even reducers can skip actions of certain types and only get triggered for specific events only.
+- Action Creator is place where most of your Business logic should go into;
+
+- UI containers emit events
+- Action Creators listen to those events, and act accordingly
+  1. Emit another Event, and start process allover again
+  2. return an Object with `type` attribute, in this case rootReducer will be triggered to try update App State
+
+ActionCreators can be created on Application Boot, by providing them as Props to Provider, or event inside inside a container !
+
+> Data Flow Image
+>>>> IMAGE MISSING <<<<
+
+
+open your src/index.js of your newly `create-react-app` and add
+
+```jsx
+import { actions, rootReducer, selectors } from "./sdk";
+
+// or whatever logic you want to persist !
+const loadedFromDisk = JSON.parse(localStorage.myApp || "{}");
+const saveToDisk = state =>
+  localStorage.setItem("myApp", JSON.stringify(state));
+
+React.Render(
+  <Provider
+    reducer={rootReducer}
+    actions={actions}
+    selectors={selectors}
+    onChange={saveToDisk}
+    initalState={loadedFromDisk}
+  >
+    <MyApp />
+  </Provider>,
+  rootEl
+);
+```
+
+all props on Provider are optional except for "reducer"..
+
+now you can use `react-trio` `withCore` HOC to connect any component inisde your App.
+
+> Provider is just a normal React Context.Provider, and withCore is also a regular Context.Consumer
+
+> you can avoid withCore if you don't like HOC and use `import {Consumer} from react-trio` and use as you would normally do with Context.Consumer
+
 
 ## Components
 
-just like redux we have
 
 ### Action creator
 
@@ -42,6 +144,8 @@ login.js
   class LoginContainer extends React.PureComponent{
 
     componentDidMount(){
+      // Regiester some ActionCreators that Doesnot trigger Reducers, just listen to events
+      // to update local state
       this.listeners = [
         this.props.listen("LOGIN_START", ()=>this.setState({loading:true})),
         this.props.listen("LOGIN_END", ()=>this.setState({loading:false})),
@@ -50,10 +154,12 @@ login.js
     }
 
     componentWillUnMount(){
+      // Remove ActionCreators
       this.listeners.map(un=>un());
     }
 
     attemptLogin = (username, password) => {
+      // who care about validation !, let sdk do it for us :).
       this.props.emit("ATTEMPT_LOGIN", {username, password})
     }
 
@@ -65,6 +171,7 @@ login.js
           {this.state.error && <Error> {this.state.error.reason} </Error>}
 
           <LoginForm
+            currentUser={this.props.currentUser}
             onSubmit={this.attemptLogin}
             disabled={this.state.loading}
           />
@@ -75,7 +182,7 @@ login.js
   }
 
   LoginContainer.stateToProps = (store, selectors) => ({
-    currentUser: selectors.auth.getCurrentUser(store),
+    currentUser: selectors.auth.getCurrentUser(store), // get slice of AppState
   })
 
   export default withCore(LoginContainer);
@@ -87,13 +194,19 @@ above you will notice few things.
 - this.props.listen return a function that unsubscribe listerner, so we call this function on *unmount* to clear all subscriptions.
 - we will not do any validation in UI, its the SDK job to do it and emit `LOGIN_FAILED` if it fail, this allow for maximum code sharing between project.
 - **RULE OF THUMB:** if its not Enviroment dependent code, try to move it to SDK package.
+- we used Static "stateToProps" to tell `trio` to inject part of store into our component
+- we used selectors (2nd arg. in stateToProps) which is nothing more than same object that you supplied to `<Provider />`, Who want to Require('sdk/users/selectors') everytime ha.. ? **totally optional anyway**
+
 
 example SDK code
 
 ```jsx
   // selectors.js
   export const getCurrentUser =  store => store[types.mountKey] || reducer.initialState;
+```
+just pure functions that get store and return a slice of it, we recommend using 'reselect' here.
 
+```jsx
   // reducer.js
   export function reducer(state=reducer.initalState;, action){
     if(action.type === 'LOGIN_SUCCESS'){
@@ -102,9 +215,15 @@ example SDK code
     return state
   }
   reducer.initalState = {};
-  reducer.eventName = ['LOGIN_SUCCESS']; // only get called if action.type === 'LOGINSUCCESS'
+  reducer.eventName = ['LOGIN_SUCCESS','LOGIN_ANOTHER_EVENT']; // only get called if action.type === 'LOGINSUCCESS'
+```
+pure functions that can also limit when it get triggered by using static `eventName` prop.
+
+example above reducer will only get triggered for actions with `action.type === LOGIN_SUCCESS || LOGIN_ANOTHER_EVENT`
 
 
+
+```jsx
   // action.js
   async function loginActionCreator(event, data, emit){
 
@@ -143,8 +262,10 @@ example SDK code
   }
   loginActionCreator.eventName = 'LOGIN_ATTEMPT'; // only responde to 'LOGIN_ATTEMPT'
 ```
+Main part of `react-trio` app, and where most of business logic should execute.
+it can be async, await for operations, and after it all finish, just return your action to be dispatched to rootReducer... or dont return anything at all and avoid calling reducers!;
 
-Thats It, now you have your smart actionCreator inside your ./sdk folder contain all business logic, and you have kept your ui logic clean and as minimal as possible.
+Thats It, now your code inside ./sdk folder contain all business logic, and you have kept your ui logic clean and as minimal as possible.
 
 this allow you to share ./sdk folder with your mobile/web/other project easily, you can pack it into its own npm package and simply npm install it. **MAXIMUM code share :)**
 
@@ -166,133 +287,6 @@ Why we think this is better ?
 - UI designers now need to worry about just Emitting Events, no more complex bindActionCreator, or magical functions gets imported and injected into our component
 - App developers can develope whole SDK in conjunction with backend, without worrying about front end or presentation.
 - Its much faster -and safer- to run only reducers who subscribe to an event, not all reducers in chain !
-
-## Example
-
-_index.js_
-
-```jsx
-import { actions, rootReducer, selectors } from "./sdk";
-
-// or whatever logic you want to persist !
-const loadedFromDisk = JSON.parse(localStorage.myApp || "{}");
-const saveToDisk = state =>
-  localStorage.setItem("myApp", JSON.stringify(state));
-
-React.Render(
-  <Provider
-    reducer={rootReducer}
-    actions={actions}
-    selectors={selectors}
-    onChange={saveToDisk}
-    initalState={loadedFromDisk}
-  >
-    <MyApp />
-  </Provider>,
-  rootEl
-);
-```
-
-your sdk/index.js would look something like
-
-```jsx
-import Users from "./auth";
-import Todos from "./todos";
-import { combineReducers } from "react-trio";
-
-export const rootReducer = combineReducers({
-  [User.types.mountKey]: Users.reducer,
-  [Todos.types.mountKey]: Todos.reducer
-});
-
-export const selectors = [...Users.selectors, ...Todos.selectors];
-
-export const actions = [...Users.actions, ...Todos.actions];
-```
-
-every time you create a new module inside sdk folder, just add a referenec for it in you sdk/index.js file so that it would be included in your app.
-
-A module folder recommended folder structure would be
-
-- index.js
-- actions.js
-- selectors.js
-- types.js
-- reducer.js
-
-> Recommendation: create a small node/terminal tool that help you generate such boilerplate, for a better development experience !, we included a generator.js inside our ./src folder as an example.
-
-index.js
-
-```jsx
-import reducer from "./reducer";
-import actions from "./actions";
-import * as selectors from "./selectors";
-import * as types from "./types";
-
-export default {
-  reducer,
-  actions,
-  selectors,
-  config
-};
-```
-
-reducer.js
-
-```jsx
-import { ONLOAD } from "./types";
-const initialState = {};
-
-function userReducer(state = initialState, action, store) {
-  return state;
-}
-userReducer.eventName = [ONLOAD];
-userReducer.initialState = initialState;
-
-export default userReducer;
-```
-
-actions.js
-
-```jsx
-import { ONLOAD } from "./types";
-// import API from "../../api";
-
-async function loadAction(eventName, data, emit, getState) {
-  // - i can await an api call before i return !
-
-  // -OR i can also re-emit an event
-  // but careful not fall into a loop !
-
-  // emit("API_STARTING",data);
-  // const data = api.get();
-  // emit("API_END",data);
-
-  // very useful for showing spinner !
-
-  return null; // since no object with {type:''} this will not trigger any reducer.
-  // useful when api fail, no need to trigger reducers..
-
-  // example if api success and you need to call reducers
-  // return {
-  //   type: ONLOAD,
-  //   data: whatever
-  // }
-}
-loadAction.eventName = ONLOAD;
-
-export default [loadAction];
-```
-
-selectors.js
-
-```jsx
-  import * as types from './types';
-  import reducer from './reducer';
-
-  export const getTodos = store => store[types.mountKey] || reducer.initialState;
-```
 
 
 

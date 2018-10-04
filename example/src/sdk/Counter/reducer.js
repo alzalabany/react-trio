@@ -1,20 +1,13 @@
-
-import { ADD, SUBTRACT } from "./types";
-const initialState = 0
+// import { ONLOAD } from "./types";
+const initialState = {}
 
 // path: store.counter
-function counterReducer(state=initialState, action, store){
-  let newState;
-  console.log('State was', state, action);
-  if(action.type === ADD)
-    newState = state + action.data;
-  else
-    newState = state - action.data;
+function CounterReducer(state=initialState, action, store){
 
-  return isNaN(newState) || typeof newState !== typeof initialState ? initialState : newState;
+  return state;
 }
-counterReducer.eventName = [ADD, SUBTRACT];
-counterReducer.initialState = 0;
+CounterReducer.eventName = [];
+CounterReducer.initialState = initialState;
 
-export default counterReducer;
+export default CounterReducer;
 
