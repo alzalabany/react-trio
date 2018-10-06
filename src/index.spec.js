@@ -75,9 +75,63 @@ describe("react trio core", () => {
 
   // @@todo
   describe("Reducers", () => {
-    it("return same store if actionCreator didnot return action", () => {});
+    let spy,
+      aC,
+      Demo,
+      store = { a: 1 };
+    beforeEach(() => {
+      console.log("------After each--------");
+    });
+    beforeEach(() => {
+      console.log("------Before each--------");
+      ReactDOM.unmountComponentAtNode(div);
+      spy = jest.fn();
+      aC = jest.fn(n => ({ type: "any", value: 1 }));
+      Demo = jest.fn(props => (
+        <div>
+          {String(props.store.a)} {console.log(props)}
+        </div>
+      ));
+      const Connected = connect(Demo);
+      ReactDOM.render(
+        <Provider
+          actions={[aC]}
+          value={store}
+          reducer={(state, action) =>
+            action.value
+              ? {
+                  a: action.value + state.a
+                }
+              : state
+          }
+          onChange={spy}
+        >
+          <Connected />
+        </Provider>,
+        div
+      );
+    });
+    it("return new store if actionCreator returns an action", () => {
+      expect(Demo.mock.calls[0][0].store.a).toBe(1); // first run..
+      expect(Demo.mock.calls[0][0].store).toBe(store); // first run..
 
-    it("return new store if actionCreator didnot return action", async () => {});
+      return Demo.mock.calls[0][0].emit("trigger").then(r => {
+        expect(Demo.mock.calls[1][0].store).not.toBe(store); // 2nd render was with store.a = 2
+        expect(Demo.mock.calls[1][0].store.a).toBe(2); // 2nd render was with store.a = 2
+      });
+    });
+
+    it("return same store if actionCreator didnot return action", async () => {
+      aC.mockImplementationOnce(() => console.log("skip aC")); // should not change
+      expect(Demo.mock.calls[0][0].store.a).toBe(1); // first run..
+      expect(Demo.mock.calls[0][0].store).toBe(store); // first run..
+
+      return Demo.mock.calls[0][0].emit("trigger").then(r => {
+        // should remain same
+        expect(Demo.mock.calls[0][0].store.a).toBe(1); // first run..
+        expect(Demo.mock.calls[0][0].store).toBe(store); // first run..
+      });
+    });
   });
 
   describe("Integration", () => {
