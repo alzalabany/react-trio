@@ -58,7 +58,6 @@ this will create following folder structures
 
 > you dont need all above, this is just a helper small gen. i find easier to create boilerplate.
 
-
 - To Start you need to run your App with `<Provider />` from `react-trio`
 - import { rootreducer, actions, selectors } from generated sdk folder and inject them as props into Provider
 
@@ -72,19 +71,19 @@ this will create following folder structures
 
 #### Rules
 
-- All components listen for specfic Events, and only work for them.. or listen for '*' too everything, even reducers can skip actions of certain types and only get triggered for specific events only.
+- All components listen for specfic Events, and only work for them.. or listen for '\*' too everything, even reducers can skip actions of certain types and only get triggered for specific events only.
 - Action Creator is place where most of your Business logic should go into;
 
 - UI containers emit events
 - Action Creators listen to those events, and act accordingly
-  1. Emit another Event, and start process allover again
-  2. return an Object with `type` attribute, in this case rootReducer will be triggered to try update App State
+  1.  Emit another Event, and start process allover again
+  2.  return an Object with `type` attribute, in this case rootReducer will be triggered to try update App State
 
 ActionCreators can be created on Application Boot, by providing them as Props to Provider, or event inside inside a container !
 
 > Data Flow Image
->>>> IMAGE MISSING <<<<
-
+>
+> > > > IMAGE MISSING <<<<
 
 open your src/index.js of your newly `create-react-app` and add
 
@@ -112,15 +111,13 @@ React.Render(
 
 all props on Provider are optional except for "reducer"..
 
-now you can use `react-trio` `withCore` HOC to connect any component inisde your App.
+now you can use `react-trio` `connect` HOC to connect any component inisde your App.
 
-> Provider is just a normal React Context.Provider, and withCore is also a regular Context.Consumer
+> Provider is just a normal React Context.Provider, and connect is also a regular Context.Consumer
 
-> you can avoid withCore if you don't like HOC and use `import {Consumer} from react-trio` and use as you would normally do with Context.Consumer
-
+> you can avoid connect if you don't like HOC and use `import {Consumer} from react-trio` and use as you would normally do with Context.Consumer
 
 ## Components
-
 
 ### Action creator
 
@@ -136,74 +133,75 @@ someone who responde to user actions by emitting an event !.
 
 #### Example Usage
 
-
 ### example Login Component
 
 login.js
+
 ```jsx
-  class LoginContainer extends React.PureComponent{
-
-    componentDidMount(){
-      // Regiester some ActionCreators that Doesnot trigger Reducers, just listen to events
-      // to update local state
-      this.listeners = [
-        this.props.listen("LOGIN_START", ()=>this.setState({loading:true})),
-        this.props.listen("LOGIN_END", ()=>this.setState({loading:false})),
-        this.props.listen("LOGIN_FAILED", (eventName, error)=>this.setState({error})),
-      ];
-    }
-
-    componentWillUnMount(){
-      // Remove ActionCreators
-      this.listeners.map(un=>un());
-    }
-
-    attemptLogin = (username, password) => {
-      // who care about validation !, let sdk do it for us :).
-      this.props.emit("ATTEMPT_LOGIN", {username, password})
-    }
-
-    render(){
-      return <div>
-
-          {this.state.loading && <Spinner> Please wait ... </Spinner>}
-
-          {this.state.error && <Error> {this.state.error.reason} </Error>}
-
-          <LoginForm
-            currentUser={this.props.currentUser}
-            onSubmit={this.attemptLogin}
-            disabled={this.state.loading}
-          />
-
-      </div>
-    }
-
+class LoginContainer extends React.PureComponent {
+  componentDidMount() {
+    // Regiester some ActionCreators that Doesnot trigger Reducers, just listen to events
+    // to update local state
+    this.listeners = [
+      this.props.listen("LOGIN_START", () => this.setState({ loading: true })),
+      this.props.listen("LOGIN_END", () => this.setState({ loading: false })),
+      this.props.listen("LOGIN_FAILED", (eventName, error) =>
+        this.setState({ error })
+      )
+    ];
   }
 
-  LoginContainer.stateToProps = (store, selectors) => ({
-    currentUser: selectors.auth.getCurrentUser(store), // get slice of AppState
-  })
+  componentWillUnMount() {
+    // Remove ActionCreators
+    this.listeners.map(un => un());
+  }
 
-  export default withCore(LoginContainer);
+  attemptLogin = (username, password) => {
+    // who care about validation !, let sdk do it for us :).
+    this.props.emit("ATTEMPT_LOGIN", { username, password });
+  };
+
+  render() {
+    return (
+      <div>
+        {this.state.loading && <Spinner> Please wait ... </Spinner>}
+
+        {this.state.error && <Error> {this.state.error.reason} </Error>}
+
+        <LoginForm
+          currentUser={this.props.currentUser}
+          onSubmit={this.attemptLogin}
+          disabled={this.state.loading}
+        />
+      </div>
+    );
+  }
+}
+
+LoginContainer.stateToProps = (store, selectors) => ({
+  currentUser: selectors.auth.getCurrentUser(store) // get slice of AppState
+});
+
+export default connect(LoginContainer);
 ```
 
 above you will notice few things.
 
 - using listen and emit, makes the UI very clean !
-- this.props.listen return a function that unsubscribe listerner, so we call this function on *unmount* to clear all subscriptions.
+- this.props.listen return a function that unsubscribe listerner, so we call this function on _unmount_ to clear all subscriptions.
 - we will not do any validation in UI, its the SDK job to do it and emit `LOGIN_FAILED` if it fail, this allow for maximum code sharing between project.
 - **RULE OF THUMB:** if its not Enviroment dependent code, try to move it to SDK package.
 - we used Static "stateToProps" to tell `trio` to inject part of store into our component
 - we used selectors (2nd arg. in stateToProps) which is nothing more than same object that you supplied to `<Provider />`, Who want to Require('sdk/users/selectors') everytime ha.. ? **totally optional anyway**
 
-
 example SDK code
 
 ```jsx
-  // selectors.js
-  export const getCurrentUser =  store => store[types.mountKey] || reducer.initialState;
+// selectors.js
+export const getCurrentUser = store =>
+  store[types.mountKey] || reducer.initialState;
 ```
+
 just pure functions that get store and return a slice of it, we recommend using 'reselect' here.
 
 ```jsx
@@ -217,51 +215,50 @@ just pure functions that get store and return a slice of it, we recommend using 
   reducer.initalState = {};
   reducer.eventName = ['LOGIN_SUCCESS','LOGIN_ANOTHER_EVENT']; // only get called if action.type === 'LOGINSUCCESS'
 ```
+
 pure functions that can also limit when it get triggered by using static `eventName` prop.
 
 example above reducer will only get triggered for actions with `action.type === LOGIN_SUCCESS || LOGIN_ANOTHER_EVENT`
 
-
-
 ```jsx
-  // action.js
-  async function loginActionCreator(event, data, emit){
+// action.js
+async function loginActionCreator(event, data, emit) {
+  // if(event !== 'LOGIN_ATTEMPT')return; // we dont need this, because we used eventName bellow.
 
-    // if(event !== 'LOGIN_ATTEMPT')return; // we dont need this, because we used eventName bellow.
+  // step 1: validate Data;
+  // -----------------------
 
-    // step 1: validate Data;
-    // -----------------------
+  if (!data.username)
+    return emit("LOGIN_FAILED", { message: "username is required" });
+  if (!data.password)
+    return emit("LOGIN_FAILED", { message: "password is required" });
 
-    if( !data.username )
-      return emit('LOGIN_FAILED',{message:'username is required'});
-    if( !data.password )
-      return emit('LOGIN_FAILED',{message:'password is required'});
+  // step 2: trying to login
+  // -----------------------
 
-    // step 2: trying to login
-    // -----------------------
-
-    emit('LOGIN_START');
-    let user;
-    try{
-      user = await api.post('/login', data);
-    }catch(e){
-      emit('LOGIN_FAILED',{message:'username or password doesnot match'});
-    }
-    emit('LOGIN_END');
-
-    if(user && user.data.token){
-      // login success, and data has my token
-
-      //step 3: return action to reducer to change appState
-      // --------------------------------------------------
-      return {
-        type: 'LOGIN_SUCCESS',
-        data: user.data,
-      }
-    }
+  emit("LOGIN_START");
+  let user;
+  try {
+    user = await api.post("/login", data);
+  } catch (e) {
+    emit("LOGIN_FAILED", { message: "username or password doesnot match" });
   }
-  loginActionCreator.eventName = 'LOGIN_ATTEMPT'; // only responde to 'LOGIN_ATTEMPT'
+  emit("LOGIN_END");
+
+  if (user && user.data.token) {
+    // login success, and data has my token
+
+    //step 3: return action to reducer to change appState
+    // --------------------------------------------------
+    return {
+      type: "LOGIN_SUCCESS",
+      data: user.data
+    };
+  }
+}
+loginActionCreator.eventName = "LOGIN_ATTEMPT"; // only responde to 'LOGIN_ATTEMPT'
 ```
+
 Main part of `react-trio` app, and where most of business logic should execute.
 it can be async, await for operations, and after it all finish, just return your action to be dispatched to rootReducer... or dont return anything at all and avoid calling reducers!;
 
@@ -288,14 +285,18 @@ Why we think this is better ?
 - App developers can develope whole SDK in conjunction with backend, without worrying about front end or presentation.
 - Its much faster -and safer- to run only reducers who subscribe to an event, not all reducers in chain !
 
+## Major Releases
 
+- 0.0.1 initial release
+- 1.0.0 #Breaking change
+  - renamed components to mach redux naming convention to make it easier to understand/upgrade
+  - increase test coverage to > 80%
 
 ## Todo
 
 - improve HOC function, may be implementing `shouldComponentUpdate` if its proved to be worth it.
 - consider moving logic to its own worker.
 - consider enabling remote Event sourcing keep state tree on remote host.
-
 
 ## License
 

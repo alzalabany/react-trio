@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withCore } from "react-trio";
+import { connect } from "react-trio";
 import Counter from "./sdk/Counter";
 
 class App extends Component {
@@ -62,7 +62,7 @@ App.stateToProps = (store, selectors) => ({
   value: selectors.counter.getCurrentCount(store)
 });
 
-const ConenctdApp = withCore(App);
+const ConenctdApp = connect(App);
 
 const { Provider } = require("react-trio");
 const {
@@ -73,9 +73,9 @@ const {
   loadFromDisk
 } = require("./sdk");
 
-export default ({ addon = [] }) => (
+export default ({ addon = [a => console.log("Action :" + a)] }) => (
   <Provider
-    debug={true}
+    debug={false}
     reducer={rootReducer}
     actions={[...actions, ...addon]}
     selectors={selectors}

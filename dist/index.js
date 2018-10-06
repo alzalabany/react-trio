@@ -447,6 +447,96 @@ module.exports = { "default": keys, __esModule: true };
 
 var _Object$keys = unwrapExports(keys$1);
 
+// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
+
+
+var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var ObjectProto = Object.prototype;
+
+var _objectGpo = Object.getPrototypeOf || function (O) {
+  O = _toObject(O);
+  if (_has(O, IE_PROTO$1)) return O[IE_PROTO$1];
+  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+    return O.constructor.prototype;
+  } return O instanceof Object ? ObjectProto : null;
+};
+
+// 19.1.2.9 Object.getPrototypeOf(O)
+
+
+
+_objectSap('getPrototypeOf', function () {
+  return function getPrototypeOf(it) {
+    return _objectGpo(_toObject(it));
+  };
+});
+
+var getPrototypeOf = _core.Object.getPrototypeOf;
+
+var getPrototypeOf$1 = createCommonjsModule(function (module) {
+module.exports = { "default": getPrototypeOf, __esModule: true };
+});
+
+var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$1);
+
+var classCallCheck = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+
+exports.default = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+});
+
+var _classCallCheck = unwrapExports(classCallCheck);
+
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
+
+var $Object = _core.Object;
+var defineProperty = function defineProperty(it, key, desc) {
+  return $Object.defineProperty(it, key, desc);
+};
+
+var defineProperty$1 = createCommonjsModule(function (module) {
+module.exports = { "default": defineProperty, __esModule: true };
+});
+
+unwrapExports(defineProperty$1);
+
+var createClass = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+
+
+
+var _defineProperty2 = _interopRequireDefault(defineProperty$1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+});
+
+var _createClass = unwrapExports(createClass);
+
 // true  -> String#at
 // false -> String#codePointAt
 var _stringAt = function (TO_STRING) {
@@ -484,7 +574,7 @@ var _html = document$2 && document$2.documentElement;
 
 
 
-var IE_PROTO$1 = _sharedKey('IE_PROTO');
+var IE_PROTO$2 = _sharedKey('IE_PROTO');
 var Empty = function () { /* empty */ };
 var PROTOTYPE$1 = 'prototype';
 
@@ -517,7 +607,7 @@ var _objectCreate = Object.create || function create(O, Properties) {
     result = new Empty();
     Empty[PROTOTYPE$1] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
-    result[IE_PROTO$1] = O;
+    result[IE_PROTO$2] = O;
   } else result = createDict();
   return Properties === undefined ? result : _objectDps(result, Properties);
 };
@@ -552,20 +642,6 @@ _hide(IteratorPrototype, _wks('iterator'), function () { return this; });
 var _iterCreate = function (Constructor, NAME, next) {
   Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
-};
-
-// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-
-
-var IE_PROTO$2 = _sharedKey('IE_PROTO');
-var ObjectProto = Object.prototype;
-
-var _objectGpo = Object.getPrototypeOf || function (O) {
-  O = _toObject(O);
-  if (_has(O, IE_PROTO$2)) return O[IE_PROTO$2];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
-    return O.constructor.prototype;
-  } return O instanceof Object ? ObjectProto : null;
 };
 
 var ITERATOR = _wks('iterator');
@@ -766,10 +842,10 @@ var _meta_3 = _meta.fastKey;
 var _meta_4 = _meta.getWeak;
 var _meta_5 = _meta.onFreeze;
 
-var defineProperty = _objectDp.f;
+var defineProperty$3 = _objectDp.f;
 var _wksDefine = function (name) {
   var $Symbol = _core.Symbol || (_core.Symbol = {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: _wksExt.f(name) });
+  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty$3($Symbol, name, { value: _wksExt.f(name) });
 };
 
 // all enumerable object keys, includes symbols
@@ -1114,7 +1190,117 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 };
 });
 
-var _typeof = unwrapExports(_typeof_1);
+unwrapExports(_typeof_1);
+
+var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+
+
+
+var _typeof3 = _interopRequireDefault(_typeof_1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
+};
+});
+
+var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
+
+// Works with __proto__ only. Old v8 can't work with null proto objects.
+/* eslint-disable no-proto */
+
+
+var check = function (O, proto) {
+  _anObject(O);
+  if (!_isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+};
+var _setProto = {
+  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
+    function (test, buggy, set) {
+      try {
+        set = _ctx(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
+        set(test, []);
+        buggy = !(test instanceof Array);
+      } catch (e) { buggy = true; }
+      return function setPrototypeOf(O, proto) {
+        check(O, proto);
+        if (buggy) O.__proto__ = proto;
+        else set(O, proto);
+        return O;
+      };
+    }({}, false) : undefined),
+  check: check
+};
+
+// 19.1.3.19 Object.setPrototypeOf(O, proto)
+
+_export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
+
+var setPrototypeOf = _core.Object.setPrototypeOf;
+
+var setPrototypeOf$1 = createCommonjsModule(function (module) {
+module.exports = { "default": setPrototypeOf, __esModule: true };
+});
+
+unwrapExports(setPrototypeOf$1);
+
+// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
+_export(_export.S, 'Object', { create: _objectCreate });
+
+var $Object$1 = _core.Object;
+var create = function create(P, D) {
+  return $Object$1.create(P, D);
+};
+
+var create$1 = createCommonjsModule(function (module) {
+module.exports = { "default": create, __esModule: true };
+});
+
+unwrapExports(create$1);
+
+var inherits = createCommonjsModule(function (module, exports) {
+
+exports.__esModule = true;
+
+
+
+var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$1);
+
+
+
+var _create2 = _interopRequireDefault(create$1);
+
+
+
+var _typeof3 = _interopRequireDefault(_typeof_1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
+  }
+
+  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
+};
+});
+
+var _inherits = unwrapExports(inherits);
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
 
@@ -2571,192 +2757,6 @@ exports.default = function (fn) {
 
 var _asyncToGenerator = unwrapExports(asyncToGenerator);
 
-// 19.1.2.9 Object.getPrototypeOf(O)
-
-
-
-_objectSap('getPrototypeOf', function () {
-  return function getPrototypeOf(it) {
-    return _objectGpo(_toObject(it));
-  };
-});
-
-var getPrototypeOf = _core.Object.getPrototypeOf;
-
-var getPrototypeOf$1 = createCommonjsModule(function (module) {
-module.exports = { "default": getPrototypeOf, __esModule: true };
-});
-
-var _Object$getPrototypeOf = unwrapExports(getPrototypeOf$1);
-
-var classCallCheck = createCommonjsModule(function (module, exports) {
-
-exports.__esModule = true;
-
-exports.default = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-});
-
-var _classCallCheck = unwrapExports(classCallCheck);
-
-// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-_export(_export.S + _export.F * !_descriptors, 'Object', { defineProperty: _objectDp.f });
-
-var $Object = _core.Object;
-var defineProperty$1 = function defineProperty(it, key, desc) {
-  return $Object.defineProperty(it, key, desc);
-};
-
-var defineProperty$2 = createCommonjsModule(function (module) {
-module.exports = { "default": defineProperty$1, __esModule: true };
-});
-
-unwrapExports(defineProperty$2);
-
-var createClass = createCommonjsModule(function (module, exports) {
-
-exports.__esModule = true;
-
-
-
-var _defineProperty2 = _interopRequireDefault(defineProperty$2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      (0, _defineProperty2.default)(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-});
-
-var _createClass = unwrapExports(createClass);
-
-var possibleConstructorReturn = createCommonjsModule(function (module, exports) {
-
-exports.__esModule = true;
-
-
-
-var _typeof3 = _interopRequireDefault(_typeof_1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && ((typeof call === "undefined" ? "undefined" : (0, _typeof3.default)(call)) === "object" || typeof call === "function") ? call : self;
-};
-});
-
-var _possibleConstructorReturn = unwrapExports(possibleConstructorReturn);
-
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
-
-
-var check = function (O, proto) {
-  _anObject(O);
-  if (!_isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-};
-var _setProto = {
-  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function (test, buggy, set) {
-      try {
-        set = _ctx(Function.call, _objectGopd.f(Object.prototype, '__proto__').set, 2);
-        set(test, []);
-        buggy = !(test instanceof Array);
-      } catch (e) { buggy = true; }
-      return function setPrototypeOf(O, proto) {
-        check(O, proto);
-        if (buggy) O.__proto__ = proto;
-        else set(O, proto);
-        return O;
-      };
-    }({}, false) : undefined),
-  check: check
-};
-
-// 19.1.3.19 Object.setPrototypeOf(O, proto)
-
-_export(_export.S, 'Object', { setPrototypeOf: _setProto.set });
-
-var setPrototypeOf = _core.Object.setPrototypeOf;
-
-var setPrototypeOf$1 = createCommonjsModule(function (module) {
-module.exports = { "default": setPrototypeOf, __esModule: true };
-});
-
-unwrapExports(setPrototypeOf$1);
-
-// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-_export(_export.S, 'Object', { create: _objectCreate });
-
-var $Object$1 = _core.Object;
-var create = function create(P, D) {
-  return $Object$1.create(P, D);
-};
-
-var create$1 = createCommonjsModule(function (module) {
-module.exports = { "default": create, __esModule: true };
-});
-
-unwrapExports(create$1);
-
-var inherits = createCommonjsModule(function (module, exports) {
-
-exports.__esModule = true;
-
-
-
-var _setPrototypeOf2 = _interopRequireDefault(setPrototypeOf$1);
-
-
-
-var _create2 = _interopRequireDefault(create$1);
-
-
-
-var _typeof3 = _interopRequireDefault(_typeof_1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : (0, _typeof3.default)(superClass)));
-  }
-
-  subClass.prototype = (0, _create2.default)(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf2.default ? (0, _setPrototypeOf2.default)(subClass, superClass) : subClass.__proto__ = superClass;
-};
-});
-
-var _inherits = unwrapExports(inherits);
-
 function subscribe(name, fn, eventStore) {
   if (Array.isArray(name)) return name.map(function (n) {
     return subscribe(n, fn, eventStore);
@@ -2809,6 +2809,114 @@ function combineReducers(reducers) {
   };
 }
 
+var emit = function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2(event, data) {
+    var _this = this;
+
+    var actionCreators, promises, actions;
+    return regenerator.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            actionCreators = [];
+
+
+            if (Array.isArray(this.emitter["*"])) {
+              actionCreators = this.emitter["*"];
+            }
+
+            if (Array.isArray(this.emitter[event])) {
+              actionCreators = actionCreators.concat(this.emitter[event]);
+            }
+
+            promises = actionCreators.map(function () {
+              var _ref2 = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(fn) {
+                var r;
+                return regenerator.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        _context.prev = 0;
+                        _context.next = 3;
+                        return fn(event, data, _this.emit, _this.getState);
+
+                      case 3:
+                        r = _context.sent;
+                        return _context.abrupt("return", r);
+
+                      case 7:
+                        _context.prev = 7;
+                        _context.t0 = _context["catch"](0);
+
+                        console.error("problem will resolving action:" + event, data, fn);
+                        return _context.abrupt("return", null);
+
+                      case 11:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, _this, [[0, 7]]);
+              }));
+
+              return function (_x4) {
+                return _ref2.apply(this, arguments);
+              };
+            }());
+
+            // console.log("P is ", promises);
+
+            actions = [];
+
+            // return promiseTimeout(500, Promise.all(promises)) // max 500ms.
+
+            return _context2.abrupt("return", _Promise.all(promises) // no timelimit
+            .then(function (result) {
+              // console.log("all resolved");
+              actions = result;
+              return result.filter(function (r) {
+                return r && typeof r.type === "string";
+              });
+            }).then(function (actions) {
+              return actions.reduce(function (state, action) {
+                return _this.reducer(state, action);
+              }, _this.state);
+            }).then(function (newState) {
+              var willChange = newState ? newState !== _this.state : false;
+              if (willChange) {
+                _this.setState(newState);
+              }
+              // console.log("event end");
+
+              return {
+                ok: true,
+                actions: actions,
+                willChange: willChange,
+                state: newState
+              };
+            }).catch(function (e) {
+              console.error("something bad happened while executing event:" + event, data, e);
+              return {
+                ok: false,
+                actions: actions,
+                willChange: false,
+                state: _this.state
+              };
+            }));
+
+          case 6:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this);
+  }));
+
+  return function emit(_x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}();
+
 var noob = function noob() {
   return null;
 };
@@ -2822,90 +2930,12 @@ var ReactTrio = function (_React$Component) {
   _inherits(ReactTrio, _React$Component);
 
   function ReactTrio(props) {
-    var _this2 = this;
-
     _classCallCheck(this, ReactTrio);
 
     var _this = _possibleConstructorReturn(this, (ReactTrio.__proto__ || _Object$getPrototypeOf(ReactTrio)).call(this, props));
 
     _this.getState = function () {
       return _this.state;
-    };
-
-    _this.emit = function (event, data) {
-
-      var actionCreators = [];
-
-      if (Array.isArray(_this.emitter['*'])) {
-        actionCreators = _this.emitter['*'];
-      }
-
-      if (Array.isArray(_this.emitter[event])) {
-        actionCreators = actionCreators.concat(_this.emitter[event]);
-      }
-
-      if (_this.props.debug) {
-        console.log('will emit event: ' + event);
-        console.log('with data:', data);
-        console.log('to actionCreators:', actionCreators);
-      }
-
-      var promises = actionCreators.map(function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(fn) {
-          return regenerator.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.next = 2;
-                  return fn(event, data, _this.emit, _this.getState);
-
-                case 2:
-                  return _context.abrupt("return", _context.sent);
-
-                case 3:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee, _this2);
-        }));
-
-        return function (_x) {
-          return _ref.apply(this, arguments);
-        };
-      }());
-      console.log('Promises', promises);
-      return _Promise.all(promises).then(function (result) {
-        if (_this.props.debug) {
-          console.log('actionsCreators resolved for :' + event, result);
-        }
-        return result.filter(function (r) {
-          return r && typeof r.type === 'string';
-        });
-      }).then(function (actions) {
-        if (_this.props.debug) {
-          console.log('actions generated:', actions);
-        }
-        var data = actions.reduce(function (state, action) {
-          return _this.reducer(state, action);
-        }, _this.state);
-        console.log('new State after applying actions to reducers ', data);
-        return data;
-      }).then(function (newState) {
-        if (newState && newState !== _this.state) {
-          if (_this.props.debug) {
-            console.log('@@State Will Change', newState);
-          }
-          _this.setState(newState);
-        }
-        if (_this.props.debug) {
-          console.log('@@END working event: ' + event, newState);
-        }
-        return newState;
-      }).catch(function (e) {
-        console.error('something bad happened while executing event:' + event, data, e);
-        console.info(promises);
-      });
     };
 
     _this.listen = function (eventName, cb) {
@@ -2917,21 +2947,25 @@ var ReactTrio = function (_React$Component) {
     // adding actions
     if (Array.isArray(props.actions)) {
       props.actions.map(function (fn) {
-        return subscribe(fn.eventName || '*', fn, _this.emitter);
+        return subscribe(fn.eventName || "*", fn, _this.emitter);
       });
     }
 
     _this.reducer = props.reducer;
 
-    console.log(props, _typeof(props.reducer), _typeof(_this.reducer));
+    if (typeof _this.reducer !== "function") {
+      throw "you must supply a reducer prop of type function [RootReducer]";
+    }
 
     _this.state = _this.reducer(props.value || {}, {
       type: "/simpleflux/@@init/"
     });
 
+    _this.emit = emit.bind(_this);
+
     if (props.debug) {
-      console.log('simpleflux/@@init with ' + _Object$keys(_this.emitter).join(',') + ' events');
-      console.log('initalState will be =', _this.state);
+      console.log("simpleflux/@@init with " + _Object$keys(_this.emitter).join(",") + " events");
+      console.log("initalState will be =", _this.state);
     }
     return _this;
   }
@@ -2944,8 +2978,68 @@ var ReactTrio = function (_React$Component) {
 
   /**
    * emit action to be utelized by actionCreator or by UI
+   * @deprecated replaced with utils/emit to ease testing..
    */
+  // emit = (event, data) => {
+  //   let actionCreators = [];
 
+  //   if (Array.isArray(this.emitter["*"])) {
+  //     actionCreators = this.emitter["*"];
+  //   }
+
+  //   if (Array.isArray(this.emitter[event])) {
+  //     actionCreators = actionCreators.concat(this.emitter[event]);
+  //   }
+
+  //   if (this.props.debug) {
+  //     console.log("will emit event: " + event);
+  //     console.log("with data:", data);
+  //     console.log("to actionCreators:", actionCreators);
+  //   }
+
+  //   let promises = actionCreators.map(
+  //     async fn => await fn(event, data, this.emit, this.getState)
+  //   );
+  //   console.log("Promises", promises);
+  //   return Promise.all(promises)
+  //     .then(result => {
+  //       if (this.props.debug) {
+  //         console.log("actionsCreators resolved for :" + event, result);
+  //       }
+  //       return result.filter(r => r && typeof r.type === "string");
+  //     })
+  //     .then(actions => {
+  //       if (this.props.debug) {
+  //         console.log("actions generated:", actions);
+  //       }
+  //       const data = actions.reduce(
+  //         (state, action) => this.reducer(state, action),
+  //         this.state
+  //       );
+  //       console.log("new State after applying actions to reducers ", data);
+  //       return data;
+  //     })
+  //     .then(newState => {
+  //       if (newState && newState !== this.state) {
+  //         if (this.props.debug) {
+  //           console.log("@@State Will Change", newState);
+  //         }
+  //         this.setState(newState);
+  //       }
+  //       if (this.props.debug) {
+  //         console.log("@@END working event: " + event, newState);
+  //       }
+  //       return newState;
+  //     })
+  //     .catch(e => {
+  //       console.error(
+  //         "something bad happened while executing event:" + event,
+  //         data,
+  //         e
+  //       );
+  //       console.info(promises);
+  //     });
+  // };
 
   /**
    * used by ui to listen to events
@@ -2960,7 +3054,7 @@ var ReactTrio = function (_React$Component) {
       // --------------------------------------------
       this.props.onChange && this.props.onChange(this.state, this.stack);
       if (this.props.debug) {
-        console.log('@@simpleflux: will call onChange because component Did Update !');
+        console.log("@@simpleflux: will call onChange because component Did Update !");
       }
     }
   }, {
@@ -2988,26 +3082,33 @@ var ReactTrio = function (_React$Component) {
 }(React.Component);
 
 ReactTrio.displayName = "Core";
+ReactTrio.defaultProps = {
+  debug: false,
+  selectors: {},
+  actions: []
+};
 ReactTrio.propTypes = {
   debug: t.bool,
   reducer: t.func.isRequired,
   actions: t.arrayOf(t.func).isRequired,
+  selectors: t.any,
+  children: t.any,
   onChange: t.func,
   value: t.any
 };
 
-var Connect = Context.Consumer;
+var Consumer = Context.Consumer;
 
-var withCore = function withCore(Component) {
+var connect = function connect(Component) {
   var selectProps = Component.stateToProps;
-  var extraProps = function extraProps(_ref2) {
-    var store = _ref2.store,
-        selectors = _ref2.selectors;
+  var extraProps = function extraProps(_ref) {
+    var store = _ref.store,
+        selectors = _ref.selectors;
     return typeof selectProps === "function" ? selectProps(store, selectors) : { store: store, selectors: selectors };
   };
   return React.forwardRef(function (props, ref) {
     return React.createElement(
-      Connect,
+      Consumer,
       null,
       function (data) {
         return React.createElement(Component, _extends$1({}, props, extraProps(data), {
@@ -3022,8 +3123,8 @@ var withCore = function withCore(Component) {
 
 exports.combineReducers = combineReducers;
 exports.subscribe = subscribe;
-exports.withCore = withCore;
-exports.Connect = Connect;
+exports.connect = connect;
+exports.Consumer = Consumer;
 exports.Provider = ReactTrio;
 exports.default = ReactTrio;
 //# sourceMappingURL=index.js.map
