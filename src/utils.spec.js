@@ -1,4 +1,4 @@
-import { combineReducers, subscribe, emit } from "./utils";
+import { combineReducers, subscribe, emit, promiseTimeout } from "./utils";
 
 describe("react trio utils", () => {
   describe("combineReducers(config)", () => {
@@ -99,6 +99,20 @@ describe("react trio utils", () => {
       un();
       expect(Array.isArray(store[name])).toBeTruthy();
       expect(store[name]).not.toContain(fn);
+    });
+  });
+
+  describe("promiseTimeout(delay, promise)", () => {
+    it("should resolve if promise took less than 100ms", () => {
+      const P = new Promise(r => setTimeout(() => r("success"), 50));
+      // return promiseTimeout(100, P);
+      return expect(promiseTimeout(100, P)).resolves.toEqual("success");
+    });
+    it("should reject if promise took more than than 100ms", () => {
+      const P = new Promise(r => setTimeout(() => r("success"), 150));
+      return expect(promiseTimeout(100, P)).rejects.toEqual(
+        "Timed out in 100ms."
+      );
     });
   });
 });

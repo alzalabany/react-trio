@@ -21,7 +21,9 @@ class ReactTrio extends React.Component {
 
     this.reducer = props.reducer;
 
-    console.log(props, typeof props.reducer, typeof this.reducer);
+    if (typeof this.reducer !== "function") {
+      throw "you must supply a reducer prop of type function [RootReducer]";
+    }
 
     this.state = this.reducer(props.value || {}, {
       type: "/simpleflux/@@init/"

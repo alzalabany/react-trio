@@ -65,12 +65,31 @@ export async function emit(event, data) {
     actionCreators = actionCreators.concat(this.emitter[event]);
   }
 
-  let promises = actionCreators.map(
-    async fn => await fn(event, data, this.emit, this.getState)
-  );
-  var actions;
-  return Promise.all(promises)
+  let promises = actionCreators.map(async fn => {
+    try {
+      let r = await fn(event, data, this.emit, this.getState);
+      // resolve whatever actionCreator returns and wait for it..
+      // this allow aC's to return promises that will promise an actions
+
+      // @@todo all tests pass with or without this while condition.. so its useless or test suit is not enough!?
+      //while (!!r && !!r.then && !!r.catch) {
+      //  r = await r;
+      //}
+      return r;
+    } catch (e) {
+      console.error("problem will resolving action:" + event, data, fn);
+      return null;
+    }
+  });
+
+  // console.log("P is ", promises);
+
+  var actions = [];
+
+  // return promiseTimeout(500, Promise.all(promises)) // max 500ms.
+  return Promise.all(promises) // no timelimit
     .then(result => {
+      // console.log("all resolved");
       actions = result;
       return result.filter(r => r && typeof r.type === "string");
     })
@@ -82,6 +101,7 @@ export async function emit(event, data) {
       if (willChange) {
         this.setState(newState);
       }
+      // console.log("event end");
 
       return {
         ok: true,
@@ -104,3 +124,16 @@ export async function emit(event, data) {
       };
     });
 }
+
+export const promiseTimeout = function(ms, promise) {
+  // Create a promise that rejects in <ms> milliseconds
+  let timeout = new Promise((resolve, reject) => {
+    let id = setTimeout(() => {
+      clearTimeout(id);
+      reject("Timed out in " + ms + "ms.");
+    }, ms);
+  });
+
+  // Returns a race between our timeout and the passed in promise
+  return Promise.race([promise, timeout]);
+};
