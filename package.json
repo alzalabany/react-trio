@@ -1,6 +1,6 @@
 {
   "name": "react-trio",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "",
   "author": "alzalabany",
   "license": "MIT",
@@ -19,7 +19,8 @@
     "start": "rollup -c -w",
     "prepare": "yarn run build",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build",
+    "deploy":
+      "yarn test && yarn build && npm pack && npm run predeploy && gh-pages -d example/build && npm publish",
     "trio": "trio dir=./src/sdk "
   },
   "bin": {

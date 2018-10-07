@@ -291,6 +291,9 @@ Why we think this is better ?
 - 1.0.0 #Breaking change
   - renamed components to mach redux naming convention to make it easier to understand/upgrade
   - increase test coverage to > 80%
+- 1.2.0 #Breaking change
+  - remove default exports in favor for named exports
+  - added combineReducers.type as a super special `action.type` which force all reducer to give in there initialState if its not already in AppState, help building initial appState on fly
 
 ## Todo
 

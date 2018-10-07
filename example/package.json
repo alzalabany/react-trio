@@ -15,13 +15,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "trio": "trio dir=./src/sdk "
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!<rootDir>/node_modules/"
-    ],
+    "collectCoverageFrom": ["src/**/*.{js,jsx}", "!<rootDir>/node_modules/"],
     "coverageThreshold": {
       "global": {
         "branches": 90,

@@ -2769,6 +2769,7 @@ function subscribe(name, fn, eventStore) {
     return eventStore[name].splice(idx, 1);
   };
 }
+
 function combineReducers(reducers) {
   var reducerKeys = _Object$keys(reducers);
 
@@ -2786,13 +2787,24 @@ function combineReducers(reducers) {
     reducerKeys.forEach(function (key) {
       var nextStateForKey = void 0;
       var reducer = reducers[key];
-      var previousStateForKey = state[key];
-      var initialState = reducer.initialState || null;
+      var previousStateForKey = (state || {})[key]; // hotfix @@bug #1.0.1/1
+      var initialState = reducer.initialState; // || null; cause us pain ! never do this again.
       var scope = reducer.eventName;
 
-      if (action.type === "/trio/@@init/" || scope && scope !== "*" && scope.indexOf(action.type) === -1) {
-        nextStateForKey = previousStateForKey || initialState;
-      } else {
+      if (action.type === combineReducers.type || // a forcing type
+      scope && scope !== "*" && scope.indexOf(action.type) === -1 // eventName doesn't match
+      ) {
+          if (typeof previousStateForKey === "undefined") {
+            if (typeof initialState === "undefined") {
+              console.warn("will call reducer because its only way to set an initialState for this key.., check reducer for " + key + " it may not be prepared to handle calles from this action type", action);
+              nextStateForKey = reducer(previousStateForKey, action, state);
+            } else {
+              nextStateForKey = initialState;
+            }
+          } else {
+            nextStateForKey = previousStateForKey;
+          }
+        } else {
         nextStateForKey = reducer(previousStateForKey, action, state);
       }
 
@@ -2808,6 +2820,7 @@ function combineReducers(reducers) {
     return hasChanged ? nextState : state;
   };
 }
+combineReducers.type = "/trio/@@init/";
 
 var emit = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2(event, data) {
@@ -2920,6 +2933,7 @@ var emit = function () {
 var noob = function noob() {
   return null;
 };
+
 var Context = React.createContext({
   listen: noob,
   emit: noob,
@@ -2958,7 +2972,7 @@ var ReactTrio = function (_React$Component) {
     }
 
     _this.state = _this.reducer(props.value || {}, {
-      type: "/simpleflux/@@init/"
+      type: combineReducers.type // combineReducers.type force all reducers to give initialState
     });
 
     _this.emit = emit.bind(_this);
@@ -3121,10 +3135,9 @@ var connect = function connect(Component) {
   });
 };
 
+exports.Provider = ReactTrio;
 exports.combineReducers = combineReducers;
 exports.subscribe = subscribe;
 exports.connect = connect;
 exports.Consumer = Consumer;
-exports.Provider = ReactTrio;
-exports.default = ReactTrio;
 //# sourceMappingURL=index.js.map

@@ -45,36 +45,37 @@ describe("react trio utils", () => {
       expect(appState).toEqual({ spy: 50 });
     });
 
-    it("respect eventName as filter for reducer", () => {
+    describe("respect eventName as filter for reducer", () => {
       const iRunEveryTime = jest.fn(() => 42);
-      const iAlsoRunEveryTime = jest.fn(() => 42);
       const iRunIFa = jest.fn(() => 42);
       const shouldNotBeCalled = jest.fn(() => 41);
 
       iRunEveryTime.eventName = "*";
-      // iAlsoRunEveryTime no limits
       iRunIFa.eventName = "a";
       shouldNotBeCalled.eventName = ["b", "c"];
 
       const shape = {
         iRunIFa,
         iRunEveryTime,
-        iAlsoRunEveryTime,
         shouldNotBeCalled
       };
-      combineReducers(shape)({}, { type: "a" });
+      const initialState = {
+        iRunIFa: 1,
+        iRunEveryTime: 2,
+        shouldNotBeCalled: 4
+      };
+      const reducer = combineReducers(shape);
+      it("ignore if not listed", () => {
+        reducer(initialState, { type: "a" });
+        expect(shouldNotBeCalled.mock.calls.length).toBe(0);
+        expect(iRunIFa.mock.calls.length).toBe(1);
+        expect(iRunEveryTime.mock.calls.length).toBe(1);
+      });
 
-      expect(shouldNotBeCalled.mock.calls.length).toBe(0);
-      expect(iRunIFa.mock.calls.length).toBe(1);
-      expect(iRunEveryTime.mock.calls.length).toBe(1);
-      expect(iAlsoRunEveryTime.mock.calls.length).toBe(1);
-
-      combineReducers(shape)({}, { type: "b" });
-
-      expect(shouldNotBeCalled.mock.calls.length).toBe(1);
-      expect(iRunIFa.mock.calls.length).toBe(1);
-      expect(iRunEveryTime.mock.calls.length).toBe(2);
-      expect(iAlsoRunEveryTime.mock.calls.length).toBe(2);
+      it("respond when called if not listed", () => {
+        reducer(initialState, { type: "b" });
+        expect(shouldNotBeCalled.mock.calls.length).toBe(1);
+      });
     });
   });
 

@@ -3,6 +3,7 @@ import t from "prop-types";
 import { subscribe, combineReducers, emit } from "./utils";
 
 const noob = () => null;
+
 const Context = React.createContext({
   listen: noob,
   emit: noob,
@@ -26,7 +27,7 @@ class ReactTrio extends React.Component {
     }
 
     this.state = this.reducer(props.value || {}, {
-      type: "/simpleflux/@@init/"
+      type: combineReducers.type // combineReducers.type force all reducers to give initialState
     });
 
     this.emit = emit.bind(this);
@@ -189,5 +190,4 @@ const connect = Component => {
   });
 };
 
-export { combineReducers, subscribe, connect, Consumer, ReactTrio as Provider };
-export default ReactTrio;
+export { ReactTrio as Provider, combineReducers, subscribe, connect, Consumer };
